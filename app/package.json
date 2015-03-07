@@ -1,0 +1,21 @@
+{
+  "name": "todoApp",
+  "version": "0.0.1",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "tstcmd"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TaylorAckley/todoApp.git"
+  },
+  "keywords": [
+    "angular"
+  ],
+  "author": "TaylorA",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/TaylorAckley/todoApp/issues"
+  }
+}
