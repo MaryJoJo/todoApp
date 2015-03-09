@@ -19,9 +19,23 @@
     app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
     app.use(methodOverride());
     
-    var Todo = mongoose.model('Todo', {
-        text : String
-    });
+    
+    var Schema = mongoose.Schema;
+    
+    var TodoSchema = new Schema({
+    	name : String,
+    	text: String,
+        due: Date,
+        category: [],
+        reminders: [],
+        note: String,
+        completed: Boolean,
+        completedOn: Date,
+        created: {type: Date, Default: Date.now}
+    	
+    	});
+    
+    var Todo = mongoose.model('Todo', TodoSchema);
     
     
 // routes ======================================================================
@@ -47,6 +61,7 @@
         // create a todo, information comes from AJAX request from Angular
         Todo.create({
             text : req.body.text,
+            note : req.body.note,
             done : false
         }, function(err, todo) {
             if (err)
