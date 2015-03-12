@@ -25,13 +25,14 @@
     var TodoSchema = new Schema({
     	name : String,
     	text: String,
+    	priority: String,
         due: Date,
         category: [],
         reminders: [],
         note: String,
         completed: Boolean,
         completedOn: Date,
-        created: {type: Date, Default: Date.now}
+        created: {type: Date, Default: Date()}
     	
     	});
     
@@ -62,6 +63,10 @@
         Todo.create({
             text : req.body.text,
             note : req.body.note,
+            priority: req.body.priority,
+            created: Date(),
+            completed: false,
+            category: ["all", "default"],
             done : false
         }, function(err, todo) {
             if (err)
@@ -96,6 +101,7 @@
     
     app.get('*', function(req, res) {
     	res.sendfile('./index.html');
+    	res.setHeader('Last-Modified', (new Date()).toUTCString());
     	
     });
 
