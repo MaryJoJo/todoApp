@@ -11,12 +11,13 @@
     <title>Node/Angular Todo App</title>
 
     <!-- SCROLLS -->
-    <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">-->
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/tags.css">
     <style>
         html                    { overflow-y:scroll; }
         body                    { padding-top:50px; }
         #todo-list              { margin-bottom:30px; }
+       
     </style>
 
     <!-- SPELLS -->
@@ -39,19 +40,25 @@
             <div class="col-sm-12">
 						<table class="table">
 							<th>Mark Completed</tH>
+								<th>Completed</th>
 							<th>Name</th>
 							<th>Note</th>
                 		<th>Priority</th>
+                		<th>Category</th>
                 		<th>Created</th>
+                		<th>Action</th>
                 <!-- LOOP OVER THE TODOS IN $scope.todos -->
                 
            
-                	<tr ng-repeat="todo in todos">
-	                	<td><input type="checkbox" ng-click="deleteTodo(todo._id)"></td>
-	                    <td>{{ todo.text }}</td>
+                	<tr ng-repeat="todo in todos" ng-class="{strike: deleted}">
+	                	<td><input type="checkbox" ng-click="markComplete(todo._id)"></td>
+	                	<td>{{ todo.completed }}</td>
+	                    <td >{{ todo.text }}</td>
 	                    <td>{{ todo.note }} </td>
 	                    <td>{{ todo.priority }}</td>
+	                    <td><ul class="tags"> <li ng-repeat="key in todo.category"><a href="#">{{ key }}</a></li> </ul></td>
 	                    <td>{{ todo.created | date }}</td>
+	                    <td> <button type="submit" class="btn btn-primary btn-sm" ng-click="deleteTodo(todo._id)">Delete</button></td>
                     </tr>
                 
                 </table>
@@ -69,6 +76,7 @@
                         <input type="text" class="form-control input-lg text-center" placeholder="I want to buy a puppy that will love me forever" ng-model="formData.text">
                         <input type="text" class="form-control input-lg text-center" placeholder="Description" ng-model="formData.note">
                         <input type="text" class="form-control input-lg text-center" placeholder="Priority" ng-model="formData.priority">
+                        <input type="text" class="form-control input-lg text-center" placeholder="Category" ng-model="formData.category">
                     </div>
 
                     <!-- createToDo() WILL CREATE NEW TODOS -->

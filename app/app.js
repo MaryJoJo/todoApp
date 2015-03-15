@@ -37,6 +37,17 @@ function mainController($scope, $http) {
                 console.log('Error: ' + data);
             });
     };
+    
+        $scope.markComplete = function(id) {
+        $http.get('/api/todos/complete/' + id)
+            .success(function(data) {
+                $scope.todos = data;
+                console.log(data);
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    };
 
 }
 

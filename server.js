@@ -66,7 +66,7 @@
             priority: req.body.priority,
             created: Date(),
             completed: false,
-            category: ["all", "default"],
+            category: req.body.category.split(','),
             done : false
         }, function(err, todo) {
             if (err)
@@ -99,8 +99,57 @@
         });
     });
     
+     // Mark a todo complete
+    app.put('/api/todos/completed/:todo_id', function(req, res) {
+        Todo.findById({
+        		
+            completed : true
+  
+        }, function(err, todo) {
+            if (err)
+                res.send(err);
+
+            // get and return all the todos after you create another
+            Todo.find(function(err, todos) {
+                if (err)
+                    res.send(err);
+                res.json(todos);
+            });
+        });
+    });
+    
+         // Mark a todo complete v2
+    app.get('/api/todos/complete/:todo_id', function(req, res) {
+    	console.log(req.params.todo_id);
+        Todo.findById(req.params.todo_id, function(err, todo) {
+  if (err) throw err;
+
+  // change the users location
+  todo.completed = true;
+
+  // save the user
+  todo.save(function(err) {
+    if (err) throw err;
+Todo.find(function(err, todos) {
+                if (err)
+                    res.send(err);
+                res.json(todos);
+            });
+    console.log('Todo successfully updated!');
+  });
+
+});
+});
+    
+    
     app.get('*', function(req, res) {
     	res.sendfile('./index.html');
+    	res.setHeader('Last-Modified', (new Date()).toUTCString());
+    	
+    });
+    
+    app.get('/design', function(req, res) {
+    	res.sendfile('./indexa.html');
     	res.setHeader('Last-Modified', (new Date()).toUTCString());
     	
     });
