@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app="todoApp">
 
 <head>
 
@@ -9,18 +9,20 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Clean Blog</title>
+    <title>Todo App</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/clean-blog.min.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href="css/scrolling-nav.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/tags.css">
+    
+    <!-- SPELLS -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery web -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular web -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-cookies.js"></script>
+    <script src="app/app.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -31,157 +33,156 @@
 
 </head>
 
-<body>
+<!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" ng-controller="mainController">
 
     <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
             <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+                <a class="navbar-brand page-scroll" href="#page-top">Angular Todo App</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="index.html">Home</a>
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                    <li class="hidden">
+                        <a class="page-scroll" href="#page-top"></a>
                     </li>
                     <li>
-                        <a href="about.html">About</a>
+                        <a class="page-scroll" href="#todo">Todo</a>
                     </li>
                     <li>
-                        <a href="post.html">Sample Post</a>
+                        <a class="page-scroll" href="#about">About</a>
                     </li>
-                    <li>
-                        <a href="contact.html">Contact</a>
-                    </li>
+
                 </ul>
+                <div ng-controller="userController">
+                	<div ng-switch="isLoggedIn">
+			  <form class="form-inline navbar-form navbar-right" ng-switch-when="false">
+			  <div class="form-group">
+			    <label class="sr-only" for="email">Email address</label>
+			    <input type="email" class="form-control" id="email" placeholder="Enter email" ng-model="loginData.username">
+			  </div>
+			  <div class="form-group">
+			    <label class="sr-only" for="password">Password</label>
+			    <input type="password" class="form-control" id="password" placeholder="Password" ng-model="loginData.password">
+			  </div>
+			  <div class="checkbox">
+			    <label>
+			      <input type="checkbox" ng-model="loginData.rememberme"> Remember me
+			    </label>
+			  </div>
+			  <button type="submit" class="btn btn-primary" ng-click="loginUser()">Login</button>
+			  <button type="submit" class="btn btn-primary" ng-click="createUser()">Create Your Account</button>
+			  </form>
+			  
+			  <ul class="nav navbar-form navbar-right" ng-switch-when="true">
+			  <li>Hello {{ user.username }}</li>
+			  <li>Last Logged in: {{ user.lastlogin | date }}</li>
+			  </ul>
+			</div>
+			</div>
             </div>
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container -->
     </nav>
 
-    <!-- Page Header -->
-    <!-- Set your background image for this header on the line below. -->
-    <header class="intro-header" style="background-image: url('img/home-bg.jpg')">
+    <!-- Intro Section -->
+    <section id="intro" class="intro-section">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <div class="site-heading">
-                        <h1>Clean Blog</h1>
-                        <hr class="small">
-                        <span class="subheading">A Clean Blog Theme by Start Bootstrap</span>
-                    </div>
+                <div class="col-lg-12">
+                    <h1>Create Todo</h1>
+                    <form class="form-inline">
+  <div class="form-group">
+   <!-- <label for="title">Title</label>-->
+    <input type="text" class="form-control" id="title" placeholder="Title" ng-model="formData.text">
+  </div>
+  <div class="form-group">
+     <!-- <label for="category">Category</label>-->
+    <input type="text" class="form-control" id="category" placeholder="Categories" ng-model="formData.category">
+  </div>
+    <div class="form-group">
+     <!-- <label for="due">Due</label>-->
+    <input type="date" class="form-control" id="due" placeholder="Due" ng-model="formData.due">
+  </div>
+      <div class="form-group">
+     <!-- <label for="due">Priority</label> -->
+    <select class="form-control" id="priority" placeholder="Priority" ng-model="formData.priority">
+    	  <option>Normal</option>
+  		<option>Low</option>
+ 		 <option>High</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary" ng-click="createTodo()">Create Todo</button>
+</form>
                 </div>
+       
             </div>
+            
         </div>
-    </header>
 
-    <!-- Main Content -->
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="post-preview">
-                    <a href="post.html">
-                        <h2 class="post-title">
-                            Man must explore, and this is exploration at its greatest
-                        </h2>
-                        <h3 class="post-subtitle">
-                            Problems look mighty small from 150 miles up
-                        </h3>
-                    </a>
-                    <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on September 24, 2014</p>
-                </div>
-                <hr>
-                <div class="post-preview">
-                    <a href="post.html">
-                        <h2 class="post-title">
-                            I believe every human has a finite number of heartbeats. I don't intend to waste any of mine.
-                        </h2>
-                    </a>
-                    <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on September 18, 2014</p>
-                </div>
-                <hr>
-                <div class="post-preview">
-                    <a href="post.html">
-                        <h2 class="post-title">
-                            Science has not yet mastered prophecy
-                        </h2>
-                        <h3 class="post-subtitle">
-                            We predict too much for the next year and yet far too little for the next ten.
-                        </h3>
-                    </a>
-                    <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on August 24, 2014</p>
-                </div>
-                <hr>
-                <div class="post-preview">
-                    <a href="post.html">
-                        <h2 class="post-title">
-                            Failure is not an option
-                        </h2>
-                        <h3 class="post-subtitle">
-                            Many say exploration is part of our destiny, but it’s actually our duty to future generations.
-                        </h3>
-                    </a>
-                    <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on July 8, 2014</p>
-                </div>
-                <hr>
-                <!-- Pager -->
-                <ul class="pager">
-                    <li class="next">
-                        <a href="#">Older Posts &rarr;</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+        </section>
+    
 
-    <hr>
-
-    <!-- Footer -->
-    <footer>
+    <!-- About Section -->
+    <section id="todos" class="todo-section">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <ul class="list-inline text-center">
-                        <li>
-                            <a href="#">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                    <p class="copyright text-muted">Copyright &copy; Your Website 2014</p>
+                <div class="col-lg-12">
+                    <h1>Your Todos</h1>
+                    <table class="table">
+							<th>Mark Completed</tH>
+						    <th>Completed</th>
+							<th>Name</th>
+							<th>Note</th>
+                		<th>Priority</th>
+                		<th>Category</th>
+                		<th>Created</th>
+                		<th>Action</th>
+                <!-- LOOP OVER THE TODOS IN $scope.todos -->
+                
+           
+                	<tr ng-repeat="todo in todos" ng-class="{strike: deleted}">
+	                	<td><input type="checkbox" ng-click="markComplete(todo._id)"></td>
+	                	<td ng-model"deleted">{{ todo.completed }}</td>
+	                    <td >{{ todo.text }}</td>
+	                    <td>{{ todo.note }} </td>
+	                    <td>{{ todo.priority }}</td>
+	                    <td><ul class="tags"> <li ng-repeat="key in todo.category"><a href="#">{{ key }}</a></li> </ul></td>
+	                    <td>{{ todo.created | date }}</td>
+	                    <td> <button type="submit" class="btn btn-primary btn-sm" ng-click="deleteTodo(todo._id)">Delete</button></td>
+                    </tr>
+                
+                </table>
                 </div>
             </div>
         </div>
-    </footer>
+    </section>
+
+    <!-- Services Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>About</h1>
+                    <p>Created with the MEAN stack.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
@@ -189,8 +190,9 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
-    <!-- Custom Theme JavaScript -->
-    <script src="js/clean-blog.min.js"></script>
+    <!-- Scrolling Nav JavaScript -->
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/scrolling-nav.js"></script>
 
 </body>
 

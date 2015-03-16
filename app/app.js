@@ -1,4 +1,4 @@
-var todoApp = angular.module('todoApp', []);
+var todoApp = angular.module('todoApp', ['ngCookies']);
 
 function mainController($scope, $http) {
     $scope.formData = {};
@@ -48,8 +48,44 @@ function mainController($scope, $http) {
                 console.log('Error: ' + data);
             });
     };
+    
+    
 
 }
+
+
+function userController($scope, $http) {
+	$scope.loginData = {username: 'taylorackley@gmail.com', password: 'Vb578Vb578!'};
+    $scope.isLoggedIn = false;
+    
+    
+    // Auth Functions via passport.
+        $scope.loginUser = function() {
+        $http.post('/api/users/login', $scope.loginData)
+            .success(function(data) {
+                $scope.loginData = {}; // clear the form so our user is ready to enter another
+                $scope.user = data;
+                $scope.isLoggedIn = true;
+                console.log(data);
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    };
+    
+        $scope.createUser = function() {
+        $http.post('/api/users/createuser', $scope.loginData)
+            .success(function(data) {
+                $scope.logindata = {}; // clear the form so our user is ready to enter another
+                $scope.user = data;
+                console.log(data);
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    };
+    
+   }
 
 //function userController($scope) {
 	
@@ -58,11 +94,3 @@ function mainController($scope, $http) {
 //$scope.photo = 'https://s3-us-west-2.amazonaws.com/hwcdn/images/img/27a9670.png';
 
 //}
-	//var mongoose = require('mongoose');
-//mongoose.connect('mongodb://localhost/todoApp', function(err) {
-    //if(err) {
-       // console.log('connection error', err);
-    //} else {
-      //  console.log('connection successful');
-  //  }
-//});
