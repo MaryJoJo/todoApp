@@ -1,7 +1,7 @@
 var todoApp = angular.module('todoApp', ['ngCookies']);
 
 function mainController($scope, $http) {
-    $scope.formData = {};
+    $scope.formData = {due: Date()};
 
     // when landing on the page, get all todos and show them
     $http.get('/api/todos')
