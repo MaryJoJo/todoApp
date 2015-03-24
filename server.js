@@ -3,7 +3,7 @@
     // set up ========================
     var express  = require('express');
     var app      = express(); // create our app w/ express
-    var session = require('cookie-session');                               
+    var session = require('cookie-session');
     var mongoose = require('mongoose');                     // mongoose for mongodb
     var morgan = require('morgan');             // log requests to the console (express4)
     var bodyParser = require('body-parser');    // pull information from HTML POST (express4)
@@ -28,13 +28,13 @@
   	app.use(passport.initialize());
   	app.use(passport.session());
   	app.use(flash());
-  	
-    
+
+
     // Set Schema for our todos and users.
-    
-    
+
+
     var Schema = mongoose.Schema;
-    
+
     var TodoSchema = new Schema({
     	name : String,
     	text: String,
@@ -47,11 +47,11 @@
         completed: Boolean,
         completedOn: Date,
         created: {type: Date, Default: Date()}
-    	
+
     	});
-    
+
     var Todo = mongoose.model('Todo', TodoSchema);
-    
+
     var UserSchema = new Schema({
     	username: String,
     	password: String,
@@ -59,18 +59,18 @@
     	logins: {type: Number, Default: 0},
     	created: {type: Date, Default: Date()}
     });
-    
+
         UserSchema.methods.validPassword = function( pwd ) {
     // EXAMPLE CODE!
     return ( this.password === pwd );
 };
-    
-    var User = mongoose.model('User', UserSchema);
-    
 
-    
+    var User = mongoose.model('User', UserSchema);
+
+
+
     // Authentication via passport module.
-    
+
     passport.use(new LocalStrategy(
 	  function(username, password, done) {
 	    User.findOne({ username: username }, function (err, user) {
@@ -85,22 +85,22 @@
 	    });
 	  }
 	));
-	
+
 			passport.serializeUser(function(user, done) {
 		    console.log('serializeUser: ' + user._id);
 		    done(null, user._id);
 		});
-		
+
 		passport.deserializeUser(function(id, done) {
 		    User.findById(id, function(err, user){
 		        console.log(user);
 		        if(!err) done(null, user);
-		        else done(err, null); 
+		        else done(err, null);
 		    });
 		});
-    
+
     // End authentication code... thank god.
-    
+
 // routes ======================================================================
 
     // api ---------------------------------------------------------------------
@@ -110,6 +110,21 @@
         // use mongoose to get all todos in the database
         Todo.find(function(err, todos) {
 
+            // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+            if (err)
+                res.send(err);
+
+            res.json(todos); // return all todos in JSON format
+        });
+    });
+
+    // get all todos for specific user.
+    app.get('/api/todos/users', function(req, res) {
+
+        console.log("Getting todo's for " + req.session.passport.user)
+        // use mongoose to get all todos in the database
+        Todo.find({userid: req.session.passport.user}, function(err, todos) {
+            console.log(todos)
             // if there is an error retrieving, send the error. nothing after res.send(err) will execute
             if (err)
                 res.send(err);
@@ -136,7 +151,7 @@
                 res.send(err);
 
             // get and return all the todos after you create another
-            Todo.find(function(err, todos) {
+            Todo.find({userid: req.session.passport.user},function(err, todos) {
                 if (err)
                     res.send(err);
                 res.json(todos);
@@ -154,20 +169,20 @@
                 res.send(err);
 
             // get and return all the todos after you create another
-            Todo.find(function(err, todos) {
+            Todo.find({userid: req.session.passport.user},function(err, todos) {
                 if (err)
                     res.send(err);
                 res.json(todos);
             });
         });
     });
-    
+
          // Mark a todo complete v2
     app.get('/api/todos/complete/:todo_id', function(req, res) {
     	console.log(req.params.todo_id);
         Todo.findById(req.params.todo_id, function(err, todo) {
 		  if (err) throw err;
-		
+
 		  // change the todo to completed
 		  if(todo.completed == true) {
 		  todo.completed = false;
@@ -177,7 +192,7 @@
 		  // save the todo
 		  todo.save(function(err) {
 		    if (err) throw err;
-		Todo.find(function(err, todos) {
+		Todo.find({userid: req.session.passport.user}, function(err, todos) {
 		                if (err)
 		                    res.send(err);
 		                res.json(todos);
@@ -195,21 +210,22 @@
 	    // If this function gets called, authentication was successful.
 	    // `req.user` contains the authenticated user.
 	    //res.redirect('/' + req.user.username);
-	            User.findOne(req.user.username, function(err, user) {
+	    User.findOne(req.user.username, function(err, user) {
 		  if (err) throw err;
-		
-		  // update the lastlogin date
+          var loginCount = user.logins;
+		  // update the lastlogin date and increment the login count.
 		  user.lastlogin = Date();
+    user.logins =  loginCount + 1;
 		  // save the todo
 		  user.save();
 
 		});
 	    res.json(req.user);
-	    
+
 	    console.log("Logged in: " + req.user.username);
 	  });
-    
-    
+
+
         app.post('/api/users/createuser', function(req, res) {
 
         // create a user, information comes from AJAX request from Angular
@@ -235,16 +251,16 @@
 
     });
 
-    
+
     // Routing
-    
+
     app.get('*', function(req, res) {
     	res.sendfile('./indexa.html');
     	res.setHeader('Last-Modified', (new Date()).toUTCString());
-    	
+
     });
-    
-    
+
+
 
 
     // listen (start app with node server.js) ======================================

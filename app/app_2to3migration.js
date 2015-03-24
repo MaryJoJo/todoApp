@@ -1,19 +1,18 @@
-var todoApp = angular.module('todoApp', ['ngCookies']);
+var todoApp = angular.module('todoApp', []);
 
-todoApp.factory('todoFactory', function() {
+todoApp.service('TodoFactory', function() {
 
-  var isLoggedIn2 = 'false its';
-  return isLoggedIn2;
+this.isLoggedInGlobal = false;
 
 });
 
 
 
-function mainController($scope, $http, todoFactory) {
+todoApp.controller('mainController', ['$scope', '$http', 'TodoFactory', function($scope, $http, TodoFactory) {
     $scope.formData = {due: new Date()};
-    $scope.model = todoFactory;
-    $scope.isLoggedIn2 = todoFactory.isLoggedIn2;
-    //$scope.todoData = {deleted: false};
+    $scope.model = TodoFactory;
+    $scope.isLoggedInGlobal = TodoFactory.isLoggedInGlobal;
+    $scope.todoData = {deleted: false};
 
     // when landing on the page, get all todos and show them
     //$http.get('/api/todos')
@@ -31,14 +30,12 @@ function mainController($scope, $http, todoFactory) {
             .success(function(data) {
               console.log(data)
                 $scope.todos = data;
-                console.log('got data!!!' + $scope.todos.length);
-                console.log(data);
+                $scope.isLoggedInGlobal = true;
             })
             .error(function(data) {
                 console.log('Error: ' + data);
             });
-
-    };
+          }
 
     // when submitting the add form, send the text to the node API
     $scope.createTodo = function() {
@@ -80,14 +77,13 @@ function mainController($scope, $http, todoFactory) {
             });
     };
 
-}
+  }]);
 
-function userController($scope, $http, todoFactory) {
+todoApp.controller('userController', ['$scope', '$http', 'TodoFactory', function($scope, $http, TodoFactory) {
 	$scope.loginData = {username: 'taylorackley@gmail.com', password: 'Vb578Vb578!'};
-    $scope.isLoggedIn = false;
     $scope.welcome = "Hello "
-    $scope.model = todoFactory;
-    $scope.isLoggedIn2 = todoFactory.isLoggedIn2;
+    $scope.model = TodoFactory;
+    $scope.isLoggedInGlobal = TodoFactory.isLoggedInGlobal;
 
 
 
@@ -97,8 +93,12 @@ function userController($scope, $http, todoFactory) {
             .success(function(data) {
                 $scope.loginData = {}; // clear the form so our user is ready to enter another
                 $scope.user = data;
-                $scope.isLoggedIn = true;
-                isLoggedIn = true;
+                console.log($scope.isLoggedInGlobal);
+                console.log(TodoFactory.isLoggedInGlobal);
+                $scope.isLoggedInGlobal = true;
+                TodoFactory.isLoggedInGlobal = true;
+                console.log($scope.isLoggedInGlobal);
+                console.log(TodoFactory.isLoggedInGlobal);
                 console.log(data);
                 $scope.getUserTodos()
               })
@@ -121,4 +121,4 @@ function userController($scope, $http, todoFactory) {
             });
     };
 
-   }
+  }]);
