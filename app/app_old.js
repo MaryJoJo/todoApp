@@ -1,18 +1,7 @@
 var todoApp = angular.module('todoApp', ['ngCookies']);
 
-todoApp.factory('todoFactory', function() {
-
-  var isLoggedIn2 = 'false its';
-  return isLoggedIn2;
-
-});
-
-
-
-function mainController($scope, $http, todoFactory) {
+function mainController($scope, $http) {
     $scope.formData = {due: new Date()};
-    $scope.model = todoFactory;
-    $scope.isLoggedIn2 = todoFactory.isLoggedIn2;
     //$scope.todoData = {deleted: false};
 
     // when landing on the page, get all todos and show them
@@ -82,13 +71,9 @@ function mainController($scope, $http, todoFactory) {
 
 }
 
-function userController($scope, $http, todoFactory) {
+function userController($scope, $http) {
 	$scope.loginData = {username: 'taylorackley@gmail.com', password: 'Vb578Vb578!'};
     $scope.isLoggedIn = false;
-    $scope.welcome = "Hello "
-    $scope.model = todoFactory;
-    $scope.isLoggedIn2 = todoFactory.isLoggedIn2;
-
 
 
     // Auth Functions via passport.
