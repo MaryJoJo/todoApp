@@ -18,7 +18,7 @@ todoApp.controller('mainController', ['$scope', '$http', 'loginService', functio
     $scope.formData = {due: new Date()};
     $scope.model = loginService;
     //$scope.isLoggedInGlobal = function () { return loginService.isLoggedIn(); }
-    $scope.isLoggedInGlobal = loginService.isLoggedIn(); 
+    $scope.isLoggedInGlobal = loginService.isLoggedIn();
     $scope.todoData = {deleted: false};
     console.log($scope.isLoggedInGlobal);
 
@@ -89,7 +89,7 @@ todoApp.controller('userController', ['$scope', '$http', 'loginService', functio
 	$scope.loginData = {username: 'taylorackley@gmail.com', password: 'Vb578Vb578!'};
     $scope.welcome = "Hello "
     $scope.model = loginService;
-    $scope.isLoggedInGlobal = function () { return loginService.isLoggedIn(); }
+    $scope.isLoggedInGlobal = loginService.isLoggedIn()
 
 
 
