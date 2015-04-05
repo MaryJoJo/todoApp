@@ -9,8 +9,7 @@
     var bodyParser = require('body-parser');    // pull information from HTML POST (express4)
     var methodOverride = require('method-override'); // simulate DELETE and PUT (express4)
     var flash    = require('connect-flash');
-    var passport = require('passport')
-  , LocalStrategy = require('passport-local').Strategy;
+    var passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
 
 
     // configuration =================
@@ -121,10 +120,10 @@
     // get all todos for specific user.
     app.get('/api/todos/users', function(req, res) {
 
-        console.log("Getting todo's for " + req.session.passport.user)
+        console.log("Getting todo's for " + req.session.passport.user);
         // use mongoose to get all todos in the database
         Todo.find({userid: req.session.passport.user}, function(err, todos) {
-            console.log(todos)
+            console.log(todos);
             // if there is an error retrieving, send the error. nothing after res.send(err) will execute
             if (err)
                 res.send(err);
@@ -184,7 +183,7 @@
 		  if (err) throw err;
 
 		  // change the todo to completed
-		  if(todo.completed == true) {
+		  if(todo.completed === true) {
 		  todo.completed = false;
 		} else{
 			todo.completed = true;
@@ -215,7 +214,7 @@
           var loginCount = user.logins;
 		  // update the lastlogin date and increment the login count.
 		  user.lastlogin = Date();
-    user.logins =  loginCount + 1;
+    //user.logins =  loginCount + 1;
 		  // save the todo
 		  user.save();
 
