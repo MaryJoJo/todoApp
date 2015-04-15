@@ -1,6 +1,9 @@
-var todoApp = angular.module('todoApp', []);
+var todoApp = angular.module('todoApp', []).config(function($locationProvider) {
+    $locationProvider.hashPrefix('!');
+    $locationProvider.html5Mode(true);
+  });
 
-todoApp.controller('mainController', ['$scope', '$http', function($scope, $http) {
+todoApp.controller('mainController', ['$scope', '$location', '$http', function($scope, $location, $http) {
   $scope.formData = {
     due: new Date()
   };
@@ -74,7 +77,7 @@ todoApp.controller('mainController', ['$scope', '$http', function($scope, $http)
 
 }]);
 
-todoApp.controller('userController', ['$scope', '$http', function($scope, $http) {
+todoApp.controller('userController', ['$scope', '$location', '$http', function($scope, $location, $http) {
   $scope.loginData = {
     username: 'taylorackley@gmail.com',
     password: 'Vb578Vb578!'
@@ -89,8 +92,10 @@ todoApp.controller('userController', ['$scope', '$http', function($scope, $http)
         $scope.loginData = {}; // clear the form so our user is ready to enter another
         $scope.user = data;
         $scope.isLoggedInGlobal = true;
+        $location.url('/todo');
         console.log("Login Successful? " + $scope.isLoggedInGlobal);
         console.log(data);
+
         $scope.getUserTodos();
       })
 

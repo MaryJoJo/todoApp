@@ -17,12 +17,16 @@
     <!-- Custom CSS -->
     <link href="css/scrolling-nav.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/tags.css">
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
 
     <!-- SPELLS -->
     <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>--><!-- load jquery web -->
     <script src="js/jquery-2.1.3.min.js"></script><!-- load jquery local -->
     <!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>--><!-- load angular web -->
-    <script src="js/angular.min.js"></script><!-- load angular local -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script><!-- load angular local -->
     <!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-cookies.js"></script> -->
     <script src="app/app_2to3migration.js"></script>
 
@@ -32,6 +36,8 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <base href="/">
 
 </head>
 
@@ -68,31 +74,11 @@
 
                 </ul>
                 <div ng-controller="userController">
-                	<div ng-switch="isLoggedInGlobal">
-			  <form class="form-inline navbar-form navbar-right" ng-switch-when="false">
-			  <div class="form-group">
-			    <label class="sr-only" for="email">Email address</label>
-			    <input type="email" class="form-control" id="email" placeholder="Enter email" ng-model="loginData.username">
-			  </div>
-			  <div class="form-group">
-			    <label class="sr-only" for="password">Password</label>
-			    <input type="password" class="form-control" id="password" placeholder="Password" ng-model="loginData.password">
-			  </div>
-			  <div class="checkbox">
-			    <label>
-			      <input type="checkbox" ng-model="loginData.rememberme"> Remember me
-			    </label>
-			  </div>
-			  <button type="submit" class="btn btn-primary" ng-click="loginUser()">Login</button>
-			  <button type="submit" class="btn btn-primary" ng-click="createUser()">Create Your Account</button>
-			  </form>
-
-			  <ul class="nav navbar-form navbar-right" ng-switch-when="true">
+			  <ul class="nav navbar-form navbar-right">
 			  <li>{{ welcome }} {{ user.username }}</li>
 			  <li>Last Logged in: {{ user.lastlogin | date }}</li>
         <li>Login Count: {{ user.logins | number }}</li>
 			  </ul>
-			</div>
 			</div>
             </div>
             <!-- /.navbar-collapse -->
@@ -101,11 +87,30 @@
     </nav>
     <!-- Intro Section -->
 
-    <section id="intro" class="intro-section" ng-switch="isLoggedInGlobal">
+    <section id="intro_false" class="intro-section">
         <div class="container">
             <div class="row">
-              <div ng-switch-when="false" class="col-lg-12"> <h1>{{ isLoggedInGlobal }} <h1></div>
-                <div class="col-lg-12" ng-switch-when="true">
+              <!-- remove the section below
+              <div class="col-lg-12"> 			  <form class="form-inline navbar-form navbar-right" >
+              			  <div class="form-group">
+              			    <label class="sr-only" for="email">Email address</label>
+              			    <input type="email" class="form-control" id="email" placeholder="Enter email" ng-model="loginData.username">
+              			  </div>
+              			  <div class="form-group">
+              			    <label class="sr-only" for="password">Password</label>
+              			    <input type="password" class="form-control" id="password" placeholder="Password" ng-model="loginData.password">
+              			  </div>
+              			  <div class="checkbox">
+              			    <label>
+              			      <input type="checkbox" ng-model="loginData.rememberme"> Remember me
+              			    </label>
+              			  </div>
+              			  <button type="submit" class="btn btn-primary" ng-click="loginUser()">Login</button>
+              			  <button type="submit" class="btn btn-primary" ng-click="createUser()">Create Your Account</button>
+              			  </form>
+                    </div>
+                    end section to cut out -->
+                <div class="col-lg-12">
                     <h1>Create Todo</h1>
                     <form class="form-inline">
   <div class="form-group">
@@ -140,10 +145,10 @@
 
 
     <!-- About Section -->
-    <section id="todos" class="todo-section" ng-switch="isLoggedInGlobal">
+    <section id="todos" class="todo-section">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12" ng-switch-when="true">
+                <div class="col-lg-12">
                     <h1>Your Todos</h1>
                     <p class="lead"> You have {{ todos.length }} total todos!</p>
                     <table class="table">
@@ -169,7 +174,7 @@
 
                 </table>
                 </div>
-                <div class="col-lg-12" ng-switch-when="false"><h1>{{ isLoggedInGlobal }}</h1></div>
+
 
           </div>
         </div>

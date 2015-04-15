@@ -221,6 +221,7 @@
 		});
 	    res.json(req.user);
 
+
 	    console.log("Logged in: " + req.user.username);
 	  });
 
@@ -253,9 +254,20 @@
 
     // Routing
 
-    app.get('*', function(req, res) {
-    	res.sendfile('./indexa.html');
+    app.get('/', function(req, res) {
+    	res.sendfile('./index.html');
     	res.setHeader('Last-Modified', (new Date()).toUTCString());
+
+    });
+
+    app.get('/todo', function(req, res) {
+      res.sendfile('./indexa.html');
+      res.setHeader('Last-Modified', (new Date()).toUTCString());
+
+    });
+
+    app.get('/#/todo', function(req, res) {
+      res.redirect('/todo');
 
     });
 
