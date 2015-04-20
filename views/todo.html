@@ -1,0 +1,153 @@
+<!-- Navigation -->
+<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header page-scroll">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand page-scroll" href="#page-top">Angular Todo App</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse navbar-ex1-collapse">
+      <ul class="nav navbar-nav">
+        <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+        <li class="hidden">
+          <a class="page-scroll" href="#page-top"></a>
+        </li>
+        <li>
+          <a class="page-scroll" href="#todo">Todo</a>
+        </li>
+        <li>
+          <a class="page-scroll" href="#about">About</a>
+        </li>
+
+      </ul>
+      <div ng-controller="userController">
+        <ul class="nav navbar-form navbar-right">
+          <li>{{ welcome }} {{ user.username }}</li>
+          <li>Last Logged in: {{ user.lastlogin | date }}</li>
+          <li>Login Count: {{ user.logins | number }}</li>
+        </ul>
+      </div>
+    </div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav>
+<!-- Intro Section -->
+
+<section id="intro_false" class="intro-section">
+  <div class="container">
+    <div class="row">
+      <!-- remove the section below
+              <div class="col-lg-12"> 			  <form class="form-inline navbar-form navbar-right" >
+              			  <div class="form-group">
+              			    <label class="sr-only" for="email">Email address</label>
+              			    <input type="email" class="form-control" id="email" placeholder="Enter email" ng-model="loginData.username">
+              			  </div>
+              			  <div class="form-group">
+              			    <label class="sr-only" for="password">Password</label>
+              			    <input type="password" class="form-control" id="password" placeholder="Password" ng-model="loginData.password">
+              			  </div>
+              			  <div class="checkbox">
+              			    <label>
+              			      <input type="checkbox" ng-model="loginData.rememberme"> Remember me
+              			    </label>
+              			  </div>
+              			  <button type="submit" class="btn btn-primary" ng-click="loginUser()">Login</button>
+              			  <button type="submit" class="btn btn-primary" ng-click="createUser()">Create Your Account</button>
+              			  </form>
+                    </div>
+                    end section to cut out -->
+      <div class="col-lg-12">
+        <h1>Create Todo</h1>
+        <form class="form-inline">
+          <div class="form-group">
+            <!-- <label for="title">Title</label>-->
+            <input type="text" class="form-control" id="title" placeholder="Title" ng-model="formData.text">
+          </div>
+          <div class="form-group">
+            <!-- <label for="category">Category</label>-->
+            <input type="text" class="form-control" id="category" placeholder="Categories" ng-model="formData.category">
+          </div>
+          <div class="form-group">
+            <!-- <label for="due">Due</label>-->
+            <input type="date" class="form-control" id="due" ng-model="formData.due">
+          </div>
+          <div class="form-group">
+            <!-- <label for="due">Priority</label> -->
+            <select class="form-control" id="priority" placeholder="Priority" ng-model="formData.priority">
+              <option selected>Normal</option>
+              <option>Low</option>
+              <option>High</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary" ng-click="createTodo()">Create Todo</button>
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- About Section -->
+<section id="todos" class="todo-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <h1>Your Todos</h1>
+        <p class="lead"> You have {{ todos.length }} total todos!</p>
+        <table class="table">
+          <th>Mark Completed</tH>
+          <th>Completed</th>
+          <th>Name</th>
+          <th>Note</th>
+          <th>Priority</th>
+          <th>Category</th>
+          <th>Created</th>
+          <th>Action</th>
+          <!-- LOOP OVER THE TODOS IN $scope.todos -->
+          <tr ng-repeat="todo in todos" ng-class="{strike: deleted}">
+            <td>
+              <input type="checkbox" ng-click="markComplete(todo._id)" ng-model="deleted">
+            </td>
+            <td>{{ todo.completed }}</td>
+            <td>{{ todo.text }}</td>
+            <td>{{ todo.note }} </td>
+            <td>{{ todo.priority }}</td>
+            <td>
+              <ul class="tags">
+                <li ng-repeat="key in todo.category"><a href="#">{{ key }}</a></li>
+              </ul>
+            </td>
+            <td>{{ todo.created | date }}</td>
+            <td>
+              <button type="submit" class="btn btn-primary btn-sm" ng-click="deleteTodo(todo._id)">Delete</button>
+            </td>
+          </tr>
+
+        </table>
+      </div>
+
+
+    </div>
+  </div>
+</section>
+<!-- Services Section -->
+<section id="about" class="about-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <h1>About</h1>
+        <p>Created with the MEAN stack.</p>
+      </div>
+    </div>
+  </div>
+</section>

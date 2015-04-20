@@ -1,7 +1,19 @@
-var todoApp = angular.module('todoApp', []).config(function($locationProvider) {
-    $locationProvider.hashPrefix('!');
-    $locationProvider.html5Mode(true);
+var todoApp = angular.module('todoApp', ['ngRoute']).config(function($locationProvider, $routeProvider) {
+
+  $routeProvider.
+  when('/', {
+    templateUrl: '/views/splash.html'
+  }).
+  when('/todo', {
+    templateUrl: '/views/todo.html'
+  }).
+  otherwise({
+    redirectTo: '/'
   });
+
+  //$locationProvider.hashPrefix('!');
+  //$locationProvider.html5Mode(true);
+});
 
 todoApp.controller('mainController', ['$scope', '$location', '$http', function($scope, $location, $http) {
   $scope.formData = {
@@ -89,10 +101,10 @@ todoApp.controller('userController', ['$scope', '$location', '$http', function($
   $scope.loginUser = function() {
     $http.post('/api/users/login', $scope.loginData)
       .success(function(data) {
+        $location.path('/todo');
         $scope.loginData = {}; // clear the form so our user is ready to enter another
         $scope.user = data;
         $scope.isLoggedInGlobal = true;
-        $location.url('/todo');
         console.log("Login Successful? " + $scope.isLoggedInGlobal);
         console.log(data);
 
