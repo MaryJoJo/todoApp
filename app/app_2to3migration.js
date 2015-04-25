@@ -97,11 +97,17 @@ todoApp.controller('userController', ['$scope', '$location', '$http', function($
   $scope.welcome = "Hello ";
   $scope.isLoggedInGlobal = false;
 
+  $scope.loginFormSubmit = function() {
+    $location.path('/todo');
+
+  };
+
   // Auth Functions via passport.
   $scope.loginUser = function() {
+    $location.path('/todo');
     $http.post('/api/users/login', $scope.loginData)
       .success(function(data) {
-        $location.path('/todo');
+
         $scope.loginData = {}; // clear the form so our user is ready to enter another
         $scope.user = data;
         $scope.isLoggedInGlobal = true;
@@ -109,6 +115,7 @@ todoApp.controller('userController', ['$scope', '$location', '$http', function($
         console.log(data);
 
         $scope.getUserTodos();
+        $scope.user = data;
       })
 
     .error(function(data) {
